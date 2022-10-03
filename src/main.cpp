@@ -61,6 +61,8 @@ void loop() {
   //Whether or not the sensor's connection status has changed since last iteration.
   bool connectionChanged = isConnected != LastConnected;
 
+  //If the sensor is disconnected live, the program will wait until it is reconnected. If it was never connected to begin with,
+  //then there is no address and the program must be restarted to work with the sensor once it is connected.
   if (connectionChanged) {
     if (isConnected) {
       Serial.println("DS18B20 sensor reconnected!");
@@ -74,7 +76,7 @@ void loop() {
     return;
   }
   
-  //Request and get the temperature in degrees celcius.
+  //Telling the sensor to read temperature and grabbing. Since only 1 sensor is present, we grab the first index.
   DS18B20.requestTemperatures(); 
   double temperature = DS18B20.getTempCByIndex(0);
   
